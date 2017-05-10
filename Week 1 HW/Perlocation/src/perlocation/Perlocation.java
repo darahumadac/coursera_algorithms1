@@ -99,7 +99,7 @@ public class Perlocation {
     
     // is site (row, col) full?
     public boolean isFull(int row, int col){
-    
+		return unionFind.connected(getUnionFindIndex(row, col), VIRTUAL_TOP_SITE);
     }
     
     public int numberOfOpenSites(){
@@ -107,7 +107,7 @@ public class Perlocation {
     }
     
     public boolean percolates(){
-    
+		return unionFind.connected(VIRTUAL_TOP_SITE, VIRTUAL_BOTTOM_SITE);
     }
            
     public static void main(String[] args) {
