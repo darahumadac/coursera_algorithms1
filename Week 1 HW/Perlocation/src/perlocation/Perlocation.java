@@ -21,6 +21,7 @@ public class Perlocation {
     private final int GRID_SIZE;
     private final int VIRTUAL_TOP_SITE = 0;
     private final int VIRTUAL_BOTTOM_SITE;
+    private int _openSites;
     
     // create n-by-n grid, with all sites blocked
     public Perlocation(int n){
@@ -47,17 +48,37 @@ public class Perlocation {
         validateRowAndCol(row, col);
         if(!isOpen(row, col)){
             _grid[row-1][col-1] = OPEN;
+            _openSites++;
+            
+            int siteUnionFindIndex = getUnionFindIndex(row, col);
             
             //connect to virtual sites
             if(row == 1){
-                unionFind.union(VIRTUAL_TOP_SITE, getUnionFindIndex(row, col));
+                unionFind.union(VIRTUAL_TOP_SITE, siteUnionFindIndex);
             }else if(row == GRID_SIZE){
-                unionFind.union(VIRTUAL_BOTTOM_SITE, getUnionFindIndex(row, col));
+                unionFind.union(VIRTUAL_BOTTOM_SITE, siteUnionFindIndex);
             }
             
             //connect to open neighbors
+            int leftNeighbor = col-1;
+            if(col > 1 && isOpen(row, leftNeighbor)){
+                unionFind.union(getUnionFindIndex(row, leftNeighbor), siteUnionFindIndex);
+            }
             
+            int rightNeighbor = col+1;
+            if(col < GRID_SIZE && isOpen(row, rightNeighbor)){
+                unionFind.union(getUnionFindIndex(row, rightNeighbor), siteUnionFindIndex);
+            }
             
+            int topNeighbor = row-1;
+            if(row > 1 && isOpen(topNeighbor, col)){
+                unionFind.union(getUnionFindIndex(topNeighbor, col), siteUnionFindIndex);
+            }
+            
+            int bottomNeighbor = row+1;
+            if(row < GRID_SIZE && isOpen(bottomNeighbor, col)){
+                unionFind.union(getUnionFindIndex(bottomNeighbor, col), siteUnionFindIndex);
+            }
         }
     }  
     
@@ -82,7 +103,7 @@ public class Perlocation {
     }
     
     public int numberOfOpenSites(){
-        
+        return _openSites;
     }
     
     public boolean percolates(){
