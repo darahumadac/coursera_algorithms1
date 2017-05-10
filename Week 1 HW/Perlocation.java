@@ -27,7 +27,7 @@ public class Perlocation{
 		_openSites = 0;
 	}    
 	
-	//TODO: Fix this!!
+	//TODO: Fix this!! // Use recursion here
 	// open site (row i, column j) if it is not open already
 	public void open(int row, int col){
 		if(row < 1 || row > n || col < 1 || col > n){
@@ -59,21 +59,37 @@ public class Perlocation{
 				root = Math.min(botttomNeighbor, root);
 			}
 			
-			if(_grid[row][col-1] != BLOCKED_SITE){
-				_grid[row][col-1] = root;
-			}
-			if(_grid[row][col+1] != BLOCKED_SITE){
-				_grid[row][col+1] = root;
-			}
-			if(_grid[row-1][col] != BLOCKED_SITE){
-				_grid[row-1][col] = root;
-			}
-			if(_grid[row+1][col] != BLOCKED_SITE){
-				_grid[row+1][col] = root;
-			}
-			
 			_grid[row][col] = root;
 			
+			//connect neighbors recursively
+			connectNeighbors(row, col-1);
+			connectNeighbors(row, col+1);
+			connectNeighbors(row-1, col);
+			connectNeighbors(row+1, col);
+			
+		}
+	}
+	
+	private void connectNeighbors(int row, int col){
+		if(_grid[row][col] != BLOCKED_SITE && 
+		  (row >= 0 && row < GRID_SIZE) && (col >= 0 && col < GRID_SIZE)){
+			_grid[row][col] = root;
+			
+			connectNeighbors(row, col-1);
+			connectNeighbors(row, col+1);
+			connectNeighbors(row-1, col);
+			connectNeighbors(row+1, col);
+		}
+	}
+	
+	private void printGrid(){
+		int row = 0;
+		int col = 0;
+		for(row = 0; row<GRID_SIZE; row++){
+			for(col = 0; col<GRID_SIZE; col++){
+				System.out.print(_grid[row][col] + " ");
+			}
+			System.out.println("");
 		}
 	}
 	
