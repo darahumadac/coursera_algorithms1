@@ -62,23 +62,23 @@ public class Perlocation{
 			_grid[row][col] = root;
 			
 			//connect neighbors recursively
-			connectNeighbors(row, col-1);
-			connectNeighbors(row, col+1);
-			connectNeighbors(row-1, col);
-			connectNeighbors(row+1, col);
+			connectNeighbors(row, col-1, root);
+			connectNeighbors(row, col+1, root);
+			connectNeighbors(row-1, col, root);
+			connectNeighbors(row+1, col, root);
 			
 		}
 	}
 	
-	private void connectNeighbors(int row, int col){
-		if(_grid[row][col] != BLOCKED_SITE && 
-		  (row >= 0 && row < GRID_SIZE) && (col >= 0 && col < GRID_SIZE)){
+	private void connectNeighbors(int row, int col, int root){
+		if((row >= 0 && row < GRID_SIZE) && (col >= 0 && col < GRID_SIZE) 
+			&& _grid[row][col] != BLOCKED_SITE){
 			_grid[row][col] = root;
 			
-			connectNeighbors(row, col-1);
-			connectNeighbors(row, col+1);
-			connectNeighbors(row-1, col);
-			connectNeighbors(row+1, col);
+			connectNeighbors(row, col-1, root);
+			connectNeighbors(row, col+1, root);
+			connectNeighbors(row-1, col, root);
+			connectNeighbors(row+1, col, root);
 		}
 	}
 	
