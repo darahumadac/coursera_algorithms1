@@ -94,12 +94,14 @@ public class Perlocation {
     
     // is site (row, col) open?
     public boolean isOpen(int row, int col){
+        validateRowAndCol(row, col);
         return _grid[row-1][col-1];
     }
     
     // is site (row, col) full?
     public boolean isFull(int row, int col){
-		return unionFind.connected(getUnionFindIndex(row, col), VIRTUAL_TOP_SITE);
+        validateRowAndCol(row, col);
+        return unionFind.connected(getUnionFindIndex(row, col), VIRTUAL_TOP_SITE);
     }
     
     public int numberOfOpenSites(){
@@ -107,7 +109,7 @@ public class Perlocation {
     }
     
     public boolean percolates(){
-		return unionFind.connected(VIRTUAL_TOP_SITE, VIRTUAL_BOTTOM_SITE);
+        return unionFind.connected(VIRTUAL_TOP_SITE, VIRTUAL_BOTTOM_SITE);
     }
            
     public static void main(String[] args) {
