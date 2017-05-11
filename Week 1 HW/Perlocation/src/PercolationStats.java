@@ -33,16 +33,15 @@ public class PercolationStats {
         int gridCol;
         
         for(int trial=0; trial<TRIAL_COUNT; trial++){
+            percolation = new Percolation(GRID_SIZE);
             do{
-                percolation = new Percolation(GRID_SIZE);
-            
-                gridRow = StdRandom.uniform(1, GRID_SIZE);
-                gridCol = StdRandom.uniform(1, GRID_SIZE);
+                gridRow = StdRandom.uniform(1, GRID_SIZE+1);
+                gridCol = StdRandom.uniform(1, GRID_SIZE+1);
                 
                 percolation.open(gridRow, gridCol);
             }while(!percolation.percolates());
             
-            _trialResults[trial] = percolation.numberOfOpenSites() / (GRID_SIZE*GRID_SIZE);
+            _trialResults[trial] = (double)percolation.numberOfOpenSites() / (GRID_SIZE*GRID_SIZE);
         }
     }
     
