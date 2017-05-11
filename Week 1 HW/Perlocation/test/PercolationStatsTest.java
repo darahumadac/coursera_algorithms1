@@ -33,4 +33,15 @@ public class PercolationStatsTest {
         PercolationStats.main(new String[]{"2", "1000"});
     }
     
+    //corner cases
+    @Test(expected = IllegalArgumentException.class)
+    public void grid_lessthan_1(){
+        PercolationStats.main(new String[]{"0", "1000"});
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void trial_lessthan_1(){
+        PercolationStats.main(new String[]{"2", "-1"});
+    }
+    
 }

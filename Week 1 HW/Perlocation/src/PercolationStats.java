@@ -1,6 +1,8 @@
 
+import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
+import java.util.Locale;
 
 
 
@@ -24,6 +26,10 @@ public class PercolationStats {
     
     // perform trials independent experiments on an n-by-n grid
     public PercolationStats(int n, int trials){
+        if(n < 1 || trials < 1){
+            throw new IllegalArgumentException();
+        }
+        
         GRID_SIZE = n;
         TRIAL_COUNT = trials;
         _trialResults = new double[TRIAL_COUNT];
@@ -71,8 +77,8 @@ public class PercolationStats {
         int trials = Integer.parseInt(args[1]);
         
         PercolationStats stats = new PercolationStats(gridSize, trials);
-        System.out.println("mean                    = "+stats.mean());
-        System.out.println("stddev                  = "+stats.stddev());
-        System.out.println("95% confidence interval = ["+stats.confidenceLo()+", ["+ stats.confidenceHi()+"]");
+        StdOut.printf("mean                    = %f\n", stats.mean());
+        StdOut.printf("stddev                  = %f\n", stats.stddev());
+        StdOut.printf(Locale.US, "95%% confidence interval = [%f, %f]\n", stats.confidenceLo(), stats.confidenceHi());
     }
 }
