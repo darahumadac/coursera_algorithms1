@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package perlocation;
+
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
@@ -11,7 +11,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
  *
  * @author Darah
  */
-public class Perlocation {
+public class Percolation {
     
     private WeightedQuickUnionUF unionFind;
     private boolean[][] _grid;
@@ -24,7 +24,7 @@ public class Perlocation {
     private int _openSites;
     
     // create n-by-n grid, with all sites blocked
-    public Perlocation(int n){
+    public Percolation(int n){
         GRID_SIZE = n;
         
         if(GRID_SIZE <= 0){
