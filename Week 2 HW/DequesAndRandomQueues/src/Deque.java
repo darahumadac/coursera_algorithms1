@@ -71,6 +71,7 @@ public class Deque<Item> implements Iterable<Item> {
         tailSentinelNode = new Node<>();
         tailSentinelNode.setItem(null);
         tailSentinelNode.setPrevNode(headSentinelNode);
+        tailSentinelNode.setNextNode(null);
         
         headSentinelNode.setNextNode(tailSentinelNode);
     }            
@@ -94,6 +95,7 @@ public class Deque<Item> implements Iterable<Item> {
 		
         Node currentFirstNode = headSentinelNode.getNextNode();
         Node newFirstNode = new Node();
+        newFirstNode.setItem(item);
         newFirstNode.setNextNode(currentFirstNode);
         newFirstNode.setPrevNode(headSentinelNode);
 
@@ -117,6 +119,7 @@ public class Deque<Item> implements Iterable<Item> {
 		
         Node currentLastNode = tailSentinelNode.getPrevNode();
         Node newLastNode = new Node();
+        newLastNode.setItem(item);
         newLastNode.setNextNode(tailSentinelNode);
         newLastNode.setPrevNode(currentLastNode);
 
@@ -179,8 +182,7 @@ public class Deque<Item> implements Iterable<Item> {
 
             @Override
             public boolean hasNext() {
-                Node<Item> nextNode = currentNode.getNextNode();
-                return nextNode.equals(tailSentinelNode);
+                return currentNode.getNextNode().getItem() != null;
             }
 
             @Override
@@ -199,6 +201,6 @@ public class Deque<Item> implements Iterable<Item> {
     // unit testing (optional)
     public static void main(String[] args)
     {
-    
+        
     }
 }
