@@ -91,6 +91,20 @@ public class Deque<Item> implements Iterable<Item> {
     public void addFirst(Item item)
     {
         checkItemIfNull(item);
+		
+		Node currentFirstNode = headSentinelNode.getNextNode();
+		Node newFirstNode = new Node();
+		newFirstNode.setNextNode(currentFirstNode);
+		newFirstNode.setPrevNode(headSentinelNode);
+		
+		if(isEmpty())
+		{
+			tailSentinelNode.setPrevNode(newFirstNode);
+		}
+		
+		headSentinelNode.setNextNode(newFirstNode);
+		
+		nodeCount++;
     }
     
     private void checkItemIfNull(Item item){
@@ -104,6 +118,8 @@ public class Deque<Item> implements Iterable<Item> {
     public void addLast(Item item) 
     {
         checkItemIfNull(item);
+		
+		
     }
     
     // remove and return the item from the front
