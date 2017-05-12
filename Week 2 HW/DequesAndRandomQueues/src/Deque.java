@@ -92,15 +92,15 @@ public class Deque<Item> implements Iterable<Item> {
     {
         checkItemIfNull(item);
 		
-		Node currentFirstNode = headSentinelNode.getNextNode();
-		Node newFirstNode = new Node();
-		newFirstNode.setNextNode(currentFirstNode);
-		newFirstNode.setPrevNode(headSentinelNode);
-		
-		currentFirstNode.setPrevNode(newFirstNode);
-		headSentinelNode.setNextNode(newFirstNode);
-		
-		nodeCount++;
+        Node currentFirstNode = headSentinelNode.getNextNode();
+        Node newFirstNode = new Node();
+        newFirstNode.setNextNode(currentFirstNode);
+        newFirstNode.setPrevNode(headSentinelNode);
+
+        currentFirstNode.setPrevNode(newFirstNode);
+        headSentinelNode.setNextNode(newFirstNode);
+
+        nodeCount++;
     }
     
     private void checkItemIfNull(Item item){
@@ -115,15 +115,15 @@ public class Deque<Item> implements Iterable<Item> {
     {
         checkItemIfNull(item);
 		
-		Node currentLastNode = tailSentinelNode.getPrevNode();
-		Node newLastNode = new Node();
-		newLastNode.setNextNode(tailSentinelNode);
-		newLastNode.setPrevNode(currentLastNode);
-		
-		currentLastNode.setNextNode(newLastNode);
-		tailSentinelNode.setPrevNode(newLastNode);
-		
-		nodeCount++;
+        Node currentLastNode = tailSentinelNode.getPrevNode();
+        Node newLastNode = new Node();
+        newLastNode.setNextNode(tailSentinelNode);
+        newLastNode.setPrevNode(currentLastNode);
+
+        currentLastNode.setNextNode(newLastNode);
+        tailSentinelNode.setPrevNode(newLastNode);
+
+        nodeCount++;
 		
     }
     
@@ -132,24 +132,36 @@ public class Deque<Item> implements Iterable<Item> {
     {
         checkIfEmpty();
 		
-		Node currentFirstNode = headSentinelNode.getNextNode();
-		Node newFirstNode = currentFirstNode.getNextNode();
-		
-		headSentinelNode.setNextNode(newFirstNode);
-		newFirstNode.setPrevNode(headSentinelNode);
-		
-		nodeCount--;
+        Node<Item> currentFirstNode = headSentinelNode.getNextNode();
+        Node<Item> newFirstNode = currentFirstNode.getNextNode();
+
+        headSentinelNode.setNextNode(newFirstNode);
+        newFirstNode.setPrevNode(headSentinelNode);
+
+        nodeCount--;
+        
+        return currentFirstNode.getItem();
     }
     
     // remove and return the item from the end
     public Item removeLast()
     {
         checkIfEmpty();
+        
+        Node<Item> currentLastNode = tailSentinelNode.getPrevNode();
+        Node<Item> newLastNode = currentLastNode.getPrevNode();
+        
+        tailSentinelNode.setPrevNode(newLastNode);
+        newLastNode.setNextNode(tailSentinelNode);
+        
+        nodeCount--;
+        
+        return currentLastNode.getItem();
     }
     
     private void checkIfEmpty()
     {
-        if(size() == 0)
+        if(nodeCount == 0)
         {
             throw new NoSuchElementException();
         }
@@ -158,8 +170,31 @@ public class Deque<Item> implements Iterable<Item> {
     // return an iterator over items in order from front to end
     public Iterator<Item> iterator()
     {
-        
+        return new DequeIterator();
     }
+    
+    private class DequeIterator implements Iterator<Item>
+        {
+            private Node<Item> currentNode = headSentinelNode;
+
+            @Override
+            public boolean hasNext() {
+                Node<Item> nextNode = currentNode.getNextNode();
+                return nextNode.equals(tailSentinelNode);
+            }
+
+            @Override
+            public Item next() {
+                if(!hasNext())
+                {
+                    throw new NoSuchElementException();
+                }
+                
+                currentNode = currentNode.getNextNode();
+                return currentNode.getItem();
+            }
+
+        }
     
     // unit testing (optional)
     public static void main(String[] args)
