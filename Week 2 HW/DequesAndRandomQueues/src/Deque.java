@@ -20,43 +20,11 @@ public class Deque<Item> implements Iterable<Item> {
     
     private int nodeCount;
     
-    private class Node<Item>
+    private class Node
     {
-        private Item item;
+        private Item nodeItem;
         private Node prevNode;
         private Node nextNode;
-
-        public Item getItem() 
-        {
-            return item;
-        }
-        
-        public void setItem(Item item) 
-        {
-            this.item = item;
-        }
-        
-        public Node getPrevNode()
-        {
-            return prevNode;
-        }
-
-        public void setPrevNode(Node prev)
-        {
-            this.prevNode = prev;
-        }
-        
-        public Node getNextNode()
-        {
-            return nextNode;
-        }
-
-        public void setNextNode(Node next)
-        {
-            this.nextNode = next;
-        }
-        
-
     }
     
     // construct an empty deque
@@ -64,16 +32,16 @@ public class Deque<Item> implements Iterable<Item> {
     {
         nodeCount = 0;
         
-        headSentinelNode = new Node<>();
-        headSentinelNode.setItem(null);
-        headSentinelNode.setPrevNode(null);
+        headSentinelNode = new Node();
+        headSentinelNode.nodeItem = null;
+        headSentinelNode.prevNode = null;
         
-        tailSentinelNode = new Node<>();
-        tailSentinelNode.setItem(null);
-        tailSentinelNode.setPrevNode(headSentinelNode);
-        tailSentinelNode.setNextNode(null);
+        tailSentinelNode = new Node();
+        tailSentinelNode.nodeItem = null;
+        tailSentinelNode.prevNode = headSentinelNode;
+        tailSentinelNode.nextNode = null;
         
-        headSentinelNode.setNextNode(tailSentinelNode);
+        headSentinelNode.nextNode = tailSentinelNode;
     }            
     
     // is the deque empty?
@@ -93,14 +61,14 @@ public class Deque<Item> implements Iterable<Item> {
     {
         checkItemIfNull(item);
 		
-        Node currentFirstNode = headSentinelNode.getNextNode();
+        Node currentFirstNode = headSentinelNode.nextNode;
         Node newFirstNode = new Node();
-        newFirstNode.setItem(item);
-        newFirstNode.setNextNode(currentFirstNode);
-        newFirstNode.setPrevNode(headSentinelNode);
+        newFirstNode.nodeItem = item;
+        newFirstNode.nextNode = currentFirstNode;
+        newFirstNode.prevNode = headSentinelNode;
 
-        currentFirstNode.setPrevNode(newFirstNode);
-        headSentinelNode.setNextNode(newFirstNode);
+        currentFirstNode.prevNode = newFirstNode;
+        headSentinelNode.nextNode = newFirstNode;
 
         nodeCount++;
     }
@@ -117,14 +85,14 @@ public class Deque<Item> implements Iterable<Item> {
     {
         checkItemIfNull(item);
 		
-        Node currentLastNode = tailSentinelNode.getPrevNode();
+        Node currentLastNode = tailSentinelNode.prevNode;
         Node newLastNode = new Node();
-        newLastNode.setItem(item);
-        newLastNode.setNextNode(tailSentinelNode);
-        newLastNode.setPrevNode(currentLastNode);
+        newLastNode.nodeItem = item;
+        newLastNode.nextNode = tailSentinelNode;
+        newLastNode.prevNode = currentLastNode;
 
-        currentLastNode.setNextNode(newLastNode);
-        tailSentinelNode.setPrevNode(newLastNode);
+        currentLastNode.nextNode = newLastNode;
+        tailSentinelNode.prevNode = newLastNode;
 
         nodeCount++;
 		
@@ -135,15 +103,15 @@ public class Deque<Item> implements Iterable<Item> {
     {
         checkIfEmpty();
 		
-        Node<Item> currentFirstNode = headSentinelNode.getNextNode();
-        Node<Item> newFirstNode = currentFirstNode.getNextNode();
+        Node currentFirstNode = headSentinelNode.nextNode;
+        Node newFirstNode = currentFirstNode.nextNode;
 
-        headSentinelNode.setNextNode(newFirstNode);
-        newFirstNode.setPrevNode(headSentinelNode);
+        headSentinelNode.nextNode = newFirstNode;
+        newFirstNode.prevNode = headSentinelNode;
 
         nodeCount--;
         
-        return currentFirstNode.getItem();
+        return currentFirstNode.nodeItem;
     }
     
     // remove and return the item from the end
@@ -151,15 +119,15 @@ public class Deque<Item> implements Iterable<Item> {
     {
         checkIfEmpty();
         
-        Node<Item> currentLastNode = tailSentinelNode.getPrevNode();
-        Node<Item> newLastNode = currentLastNode.getPrevNode();
+        Node currentLastNode = tailSentinelNode.prevNode;
+        Node newLastNode = currentLastNode.prevNode;
         
-        tailSentinelNode.setPrevNode(newLastNode);
-        newLastNode.setNextNode(tailSentinelNode);
+        tailSentinelNode.prevNode = newLastNode;
+        newLastNode.nextNode = tailSentinelNode;
         
         nodeCount--;
         
-        return currentLastNode.getItem();
+        return currentLastNode.nodeItem;
     }
     
     private void checkIfEmpty()
@@ -177,12 +145,12 @@ public class Deque<Item> implements Iterable<Item> {
     }
     
     private class DequeIterator implements Iterator<Item>
-        {
-            private Node<Item> currentNode = headSentinelNode;
+    {
+            private Node currentNode = headSentinelNode;
 
             @Override
             public boolean hasNext() {
-                return currentNode.getNextNode().getItem() != null;
+                return currentNode.nextNode.nodeItem != null;
             }
 
             @Override
@@ -192,11 +160,11 @@ public class Deque<Item> implements Iterable<Item> {
                     throw new NoSuchElementException();
                 }
                 
-                currentNode = currentNode.getNextNode();
-                return currentNode.getItem();
+                currentNode = currentNode.nextNode;
+                return currentNode.nodeItem;
             }
 
-        }
+    }
     
     // unit testing (optional)
     public static void main(String[] args)
