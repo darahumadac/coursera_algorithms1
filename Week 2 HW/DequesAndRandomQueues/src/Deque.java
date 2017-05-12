@@ -97,11 +97,7 @@ public class Deque<Item> implements Iterable<Item> {
 		newFirstNode.setNextNode(currentFirstNode);
 		newFirstNode.setPrevNode(headSentinelNode);
 		
-		if(isEmpty())
-		{
-			tailSentinelNode.setPrevNode(newFirstNode);
-		}
-		
+		currentFirstNode.setPrevNode(newFirstNode);
 		headSentinelNode.setNextNode(newFirstNode);
 		
 		nodeCount++;
@@ -119,6 +115,15 @@ public class Deque<Item> implements Iterable<Item> {
     {
         checkItemIfNull(item);
 		
+		Node currentLastNode = tailSentinelNode.getPrevNode();
+		Node newLastNode = new Node();
+		newLastNode.setNextNode(tailSentinelNode);
+		newLastNode.setPrevNode(currentLastNode);
+		
+		currentLastNode.setNextNode(newLastNode);
+		tailSentinelNode.setPrevNode(newLastNode);
+		
+		nodeCount++;
 		
     }
     
@@ -126,6 +131,14 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeFirst()
     {
         checkIfEmpty();
+		
+		Node currentFirstNode = headSentinelNode.getNextNode();
+		Node newFirstNode = currentFirstNode.getNextNode();
+		
+		headSentinelNode.setNextNode(newFirstNode);
+		newFirstNode.setPrevNode(headSentinelNode);
+		
+		nodeCount--;
     }
     
     // remove and return the item from the end
