@@ -115,9 +115,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     
     private class RandomQueueIterator implements Iterator<Item>
     {
+        private int[] randomIndices;
+        private int currentIndex = 0;
+        
+        private RandomQueueIterator()
+        {
+            randomIndices = new int[size];
+            for(int i = 0; i < size; i++)
+            {
+                randomIndices[i] = i;
+            }
+            
+            StdRandom.shuffle(randomIndices);
+        }
+        
+        
         @Override
         public boolean hasNext() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return currentIndex < size;
         }
 
         @Override
@@ -126,6 +141,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             {
                 throw new NoSuchElementException();
             }
+            
+            int itemIndex = randomIndices[currentIndex];
+            currentIndex++;
+            
+            return randomQueue[itemIndex];
             
         }
         
