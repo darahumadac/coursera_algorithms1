@@ -93,18 +93,14 @@ public class Point implements Comparable<Point> {
      */
     @Override
     public int compareTo(Point that) {
-        if(this.y < that.y || (this.y == that.y && this.x < that.x))
+        int diff = this.y - that.y;
+        
+        if(diff == 0)
         {
-            return -1;
+            diff = this.x - that.x;
         }
-        else if(this.y == that.y && this.x == that.x)
-        {
-            return 0;
-        }
-        else
-        {
-            return 1;
-        }
+        
+        return diff;
     }
 
     /**
