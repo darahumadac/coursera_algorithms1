@@ -125,4 +125,23 @@ public class PointTests {
         Assert.assertEquals(0, reference.slopeOrder().compare(firstPoint, secondPoint));
     }
     
+    //Corner Case
+    @Test
+    public void CompareTo_MaxLimits()
+    {
+        Point point = new Point(0, 32766);
+        Point that = new Point(0, 32767);
+        
+        Assert.assertEquals(-1, point.compareTo(that));
+    }
+    
+    @Test
+    public void SlopeTo_MaxLimits()
+    {
+        Point point = new Point(10, 32760);
+        Point that = new Point(0, 32767);
+        
+        Assert.assertEquals(7/-10, point.slopeTo(that), 0.0);
+    }
+    
 }
