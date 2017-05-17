@@ -92,7 +92,7 @@ public class PointTests {
         Point point = new Point(10, 3);
         Point that = new Point(5, 10);
         
-        Assert.assertEquals(7/-5, point.slopeTo(that), 0.0);
+        Assert.assertEquals(7.0/-5, point.slopeTo(that), 0.0);
     }
     
     @Test
@@ -141,7 +141,7 @@ public class PointTests {
         Point point = new Point(10, 32760);
         Point that = new Point(0, 32767);
         
-        Assert.assertEquals(7/-10, point.slopeTo(that), 0.0);
+        Assert.assertEquals(7.0/-10, point.slopeTo(that), 0.0);
     }
     
 }
