@@ -72,21 +72,33 @@ public class FastCollinearPoints {
     private void findCollinearPoints()
     {
         Arrays.sort(points);
+        printPoints(points, "Sorted Points");
         
         ArrayList<Point> slopes;
+
         for (int p = 0; p < pointsCount; p++)
         {
             slopes = new ArrayList<>();
             
-            for (int q = p+1; q < pointsCount; q++)
+            for (int q = 0; q < pointsCount; q++)
             {
-                slopes.add(points[q]);
+                if(p != q)
+                {
+                    slopes.add(points[q]);
+                }
             }
             
             if (slopes.size() > 0)
             {
                 slopes.sort(points[p].slopeOrder());
-                setCollinearLineSegments(points[p], slopes);
+                printPoints(slopes, "Sorted Points by Slopes. Reference: " 
+                        + points[p]);
+                
+                if(points[p].compareTo(slopes.get(0)) <= 0)
+                {
+                    setCollinearLineSegments(points[p], slopes);
+                }
+                
             }
             
         }
@@ -99,10 +111,10 @@ public class FastCollinearPoints {
         
         ArrayList<Point> adjacentPoints = new ArrayList<>();
 
-        Point first = sortedPoints.get(0);
-        double prevSlope = reference.slopeTo(first);
-        adjacentPoints.add(first);
-        
+        Point prev = sortedPoints.get(0);
+        double prevSlope = reference.slopeTo(prev);
+        adjacentPoints.add(prev);
+
         Point current;
         double currentSlope;
         
@@ -111,22 +123,26 @@ public class FastCollinearPoints {
             current = sortedPoints.get(i);
             currentSlope = reference.slopeTo(current);
             
-            if (prevSlope == currentSlope)
+            if(reference.compareTo(prev) <= 0)
             {
-                adjacentPoints.add(current);
-            }
-            else
-            {
-                addNewLineSegment(reference, adjacentPoints);
-                
-                adjacentPoints.clear();
-                adjacentPoints.add(current);
+                if (prevSlope == currentSlope)
+                {
+                    adjacentPoints.add(current);
+                }
+                else
+                {
+                    addNewLineSegment(reference, adjacentPoints);
+
+                    adjacentPoints.clear();
+                    adjacentPoints.add(current);
+                }
             }
             
             prevSlope = currentSlope;
+            prev = current;
         }
         
-        addNewLineSegment(reference, adjacentPoints);        
+        addNewLineSegment(reference, adjacentPoints);
     }
     
     private void addNewLineSegment(Point reference, 
@@ -152,4 +168,28 @@ public class FastCollinearPoints {
         lineSegmentArray = new LineSegment[numberOfSegments()];
         return lineSegments.toArray(lineSegmentArray);
     }
+    
+    private void printPoints(Point[] points, String message)
+    {
+        System.out.println(message);
+        for(Point p : points)
+        {
+            System.out.print(p + "-> ");
+        }
+        System.out.println();
+        System.out.println("--- End ---");
+    }
+    
+    private void printPoints(ArrayList<Point> points, String message)
+    {
+        System.out.println(message);
+        for(Point p : points)
+        {
+            System.out.print(p + "-> ");
+        }
+        System.out.println();
+        System.out.println("--- End ---");
+    }
+
+    
 }

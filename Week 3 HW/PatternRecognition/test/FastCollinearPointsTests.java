@@ -69,16 +69,17 @@ public class FastCollinearPointsTests {
     }
     
     @Test
-    public void Collinear_5pts_Horizontal()
+    public void Collinear_6pts_Horizontal()
     {
-      Point[] pts = new Point[5];
+      Point[] pts = new Point[6];
       pts[0] = new Point(19000, 10000);
       pts[1] = new Point(18000, 10000);
       pts[2] = new Point(32000, 10000);
       pts[3] = new Point(21000, 10000);
       pts[4] = new Point(1234, 5678);
+      pts[5] = new Point(14000, 10000);
       
-      System.out.println("--- Collinear 5pts ---");
+      System.out.println("--- Collinear 6pts ---");
       FastCollinearPoints fastPts = new FastCollinearPoints(pts);
       for(LineSegment ls : fastPts.segments())
       {
