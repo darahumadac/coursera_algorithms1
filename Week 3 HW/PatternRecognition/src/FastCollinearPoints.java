@@ -72,7 +72,6 @@ public class FastCollinearPoints {
     private void findCollinearPoints()
     {
         Arrays.sort(points);
-        printPoints(points, "Sorted Points");
         
         ArrayList<Point> slopes;
 
@@ -91,9 +90,6 @@ public class FastCollinearPoints {
             if (slopes.size() > 0)
             {
                 slopes.sort(points[p].slopeOrder());
-                printPoints(slopes, "Sorted Points by Slopes. Reference: " 
-                        + points[p]);
-                
                 if(points[p].compareTo(slopes.get(0)) <= 0)
                 {
                     setCollinearLineSegments(points[p], slopes);
@@ -168,28 +164,5 @@ public class FastCollinearPoints {
         lineSegmentArray = new LineSegment[numberOfSegments()];
         return lineSegments.toArray(lineSegmentArray);
     }
-    
-    private void printPoints(Point[] points, String message)
-    {
-        System.out.println(message);
-        for(Point p : points)
-        {
-            System.out.print(p + "-> ");
-        }
-        System.out.println();
-        System.out.println("--- End ---");
-    }
-    
-    private void printPoints(ArrayList<Point> points, String message)
-    {
-        System.out.println(message);
-        for(Point p : points)
-        {
-            System.out.print(p + "-> ");
-        }
-        System.out.println();
-        System.out.println("--- End ---");
-    }
-
     
 }
