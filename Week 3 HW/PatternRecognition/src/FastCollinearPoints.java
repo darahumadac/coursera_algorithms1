@@ -80,7 +80,7 @@ public class FastCollinearPoints {
             
             for (int q = 0; q < pointsCount; q++)
             {
-                if(p != q)
+                if (p != q)
                 {
                     slopes.add(points[q]);
                 }

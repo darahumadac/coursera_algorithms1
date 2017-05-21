@@ -15,9 +15,6 @@ public class Point implements Comparable<Point> {
 
     private final int x;     // x-coordinate of this point
     private final int y;     // y-coordinate of this point
-    
-    private final Comparator<Point> comparator = new SlopeComparator();
-
     /**
      * Initializes a new point.
      *
@@ -111,13 +108,7 @@ public class Point implements Comparable<Point> {
      */
     public Comparator<Point> slopeOrder() {
         /* YOUR CODE HERE */
-        return comparator;
-    }
-    
-    private class SlopeComparator implements Comparator<Point>
-    {
-        @Override
-        public int compare(Point o1, Point o2) {
+        Comparator<Point> slopeComparator = (Point o1, Point o2) -> {
             double slopeO1 = slopeTo(o1);
             double slopeO2 = slopeTo(o2);
             
@@ -130,9 +121,11 @@ public class Point implements Comparable<Point> {
                 return 1;
             }
             return 0;
-        }
+        };
         
+        return slopeComparator;
     }
+    
 
 
     /**
