@@ -41,9 +41,9 @@ public class FastCollinearPoints {
         findCollinearPoints();
     }
     
-    private boolean containsNullPoint(Point[] points)
+    private boolean containsNullPoint(Point[] pointsInput)
     {
-        for (Point p : points)
+        for (Point p : pointsInput)
         {
             if (p == null)
             {
@@ -53,9 +53,9 @@ public class FastCollinearPoints {
         return false;
     }
     
-    private boolean hasDuplicatePoint(Point[] points)
+    private boolean hasDuplicatePoint(Point[] pointsInput)
     {
-        Point[] temp = Arrays.copyOf(points, points.length);
+        Point[] temp = Arrays.copyOf(pointsInput, pointsInput.length);
         Arrays.sort(temp);
         
         for (int i = 1; i < temp.length; i++)

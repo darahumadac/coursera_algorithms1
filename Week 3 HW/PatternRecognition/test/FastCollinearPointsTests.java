@@ -17,7 +17,7 @@ public class FastCollinearPointsTests {
     @Test(expected = NullPointerException.class)
     public void Null_Points_Given()
     {
-        FastCollinearPoints brutePts = new FastCollinearPoints(null);
+        FastCollinearPoints fastPts = new FastCollinearPoints(null);
     }
     
     @Test(expected = NullPointerException.class)
@@ -28,7 +28,7 @@ public class FastCollinearPointsTests {
         pts[1] = null;
         pts[2] = new Point(1, 3);
         
-        FastCollinearPoints brutePts = new FastCollinearPoints(pts);   
+        FastCollinearPoints fastPts = new FastCollinearPoints(pts);   
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -41,7 +41,7 @@ public class FastCollinearPointsTests {
         pts[3] = new Point(1, 9);
         pts[4] = new Point(0, 0);
         
-        FastCollinearPoints brutePts = new FastCollinearPoints(pts);   
+        FastCollinearPoints fastPts = new FastCollinearPoints(pts);   
     }
     
     @Test
@@ -59,12 +59,12 @@ public class FastCollinearPointsTests {
       pts[8] = new Point(1, 5);
       pts[9] = new Point(2, 4);
       
-      FastCollinearPoints brutePts = new FastCollinearPoints(pts);
-      for(LineSegment ls : brutePts.segments())
+      FastCollinearPoints fastPts = new FastCollinearPoints(pts);
+      for(LineSegment ls : fastPts.segments())
       {
           System.out.println(ls.toString());
       }
-      Assert.assertEquals(3, brutePts.numberOfSegments());
+      Assert.assertEquals(3, fastPts.numberOfSegments());
 
     }
     
@@ -79,12 +79,12 @@ public class FastCollinearPointsTests {
       pts[4] = new Point(1234, 5678);
       
       System.out.println("--- Collinear 5pts ---");
-      FastCollinearPoints brutePts = new FastCollinearPoints(pts);
-      for(LineSegment ls : brutePts.segments())
+      FastCollinearPoints fastPts = new FastCollinearPoints(pts);
+      for(LineSegment ls : fastPts.segments())
       {
           System.out.println(ls.toString());
       }
-      Assert.assertEquals(1, brutePts.numberOfSegments());
+      Assert.assertEquals(1, fastPts.numberOfSegments());
 
     }
     
@@ -102,12 +102,36 @@ public class FastCollinearPointsTests {
       pts[7] = new Point(6000, 7000);
       
       System.out.println("--- Collinear 8pts ---");
-      FastCollinearPoints brutePts = new FastCollinearPoints(pts);
-      for(LineSegment ls : brutePts.segments())
+      FastCollinearPoints fastPts = new FastCollinearPoints(pts);
+      for(LineSegment ls : fastPts.segments())
       {
           System.out.println(ls.toString());
       }
-      Assert.assertEquals(2, brutePts.numberOfSegments());
+      Assert.assertEquals(2, fastPts.numberOfSegments());
+
+    }
+    
+    @Test
+    public void Collinear_9pts()
+    {
+        Point[] pts = new Point[9];
+        pts[0] = new Point(9000, 9000);
+        pts[1] = new Point(8000, 8000);
+        pts[2] = new Point(7000, 7000);
+        pts[3] = new Point(6000, 6000);
+        pts[4] = new Point(5000, 5000);
+        pts[5] = new Point(4000, 4000);
+        pts[6] = new Point(3000, 3000);
+        pts[7] = new Point(2000, 2000);
+        pts[8] = new Point(1000, 1000);
+        
+    System.out.println("--- Collinear 9pts ---");
+      FastCollinearPoints fastPts = new FastCollinearPoints(pts);
+      for(LineSegment ls : fastPts.segments())
+      {
+          System.out.println(ls.toString());
+      }
+      Assert.assertEquals(1, fastPts.numberOfSegments());
 
     }
     
