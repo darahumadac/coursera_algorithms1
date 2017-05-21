@@ -22,20 +22,20 @@ public class FastCollinearPoints {
     private LineSegment[] lineSegmentArray;
     
     // finds all line segments containing 4 or more points
-    public FastCollinearPoints(Point[] points)
+    public FastCollinearPoints(Point[] pointsInput)
     {
-        if(points == null || containsNullPoint(points))
+        if (pointsInput == null || containsNullPoint(pointsInput))
         {
             throw new NullPointerException();
         }
         
-        if(hasDuplicatePoint(points))
+        if (hasDuplicatePoint(pointsInput))
         {
             throw new IllegalArgumentException();
         }
         
-        this.points = points;
-        pointsCount = points.length;
+        this.points = Arrays.copyOf(pointsInput, pointsInput.length);
+        pointsCount = pointsInput.length;
         lineSegments = new ArrayList<>();
         
         findCollinearPoints();
@@ -43,9 +43,9 @@ public class FastCollinearPoints {
     
     private boolean containsNullPoint(Point[] points)
     {
-        for(Point p : points)
+        for (Point p : points)
         {
-            if(p == null)
+            if (p == null)
             {
                 return true;
             }
@@ -57,9 +57,10 @@ public class FastCollinearPoints {
     {
         Point[] temp = Arrays.copyOf(points, points.length);
         Arrays.sort(temp);
-        for(int i = 1; i < temp.length; i++)
+        
+        for (int i = 1; i < temp.length; i++)
         {
-            if(temp[i-1].compareTo(temp[i]) == 0)
+            if (temp[i-1].compareTo(temp[i]) == 0)
             {
                 return true;
             }
@@ -73,16 +74,16 @@ public class FastCollinearPoints {
         Arrays.sort(points);
         
         ArrayList<Point> slopes;
-        for(int p = 0; p < pointsCount; p++)
+        for (int p = 0; p < pointsCount; p++)
         {
             slopes = new ArrayList<>();
             
-            for(int q = p+1; q < pointsCount; q++)
+            for (int q = p+1; q < pointsCount; q++)
             {
                 slopes.add(points[q]);
             }
             
-            if(slopes.size() > 0)
+            if (slopes.size() > 0)
             {
                 slopes.sort(points[p].slopeOrder());
                 setCollinearLineSegments(points[p], slopes);
@@ -105,12 +106,12 @@ public class FastCollinearPoints {
         Point current;
         double currentSlope;
         
-        for(int i = 1; i < sortedPointCount; i++)
+        for (int i = 1; i < sortedPointCount; i++)
         {
             current = sortedPoints.get(i);
             currentSlope = reference.slopeTo(current);
             
-            if(prevSlope == currentSlope)
+            if (prevSlope == currentSlope)
             {
                 adjacentPoints.add(current);
             }
@@ -132,7 +133,7 @@ public class FastCollinearPoints {
                                    ArrayList<Point> adjacentPoints)
     {
         int adjacentPointsCount = adjacentPoints.size();
-        if(adjacentPointsCount >= 3)
+        if (adjacentPointsCount >= 3)
         {
             lineSegments.add(new LineSegment(reference, 
                     adjacentPoints.get(adjacentPointsCount-1)));
