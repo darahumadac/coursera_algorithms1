@@ -92,8 +92,13 @@ public class BruteCollinearPoints {
                         if(reference.slopeTo(qPt) == reference.slopeTo(rPt) && 
                            reference.slopeTo(rPt) == reference.slopeTo(sPt))
                         {
-                            System.out.println(reference + ", " + qPt + ", " + rPt + ", " + sPt);
-                            lineSegments.add(new LineSegment(reference, sPt));
+                            //System.out.println(reference + ", " + qPt + ", " + rPt + ", " + sPt);
+                            
+                            LineSegment newSegment = new LineSegment(reference, sPt);
+                            if(!lineSegments.contains(newSegment))
+                            {
+                                lineSegments.add(newSegment);
+                            }
                         }
                     }
                 }

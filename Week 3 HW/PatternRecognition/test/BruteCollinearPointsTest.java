@@ -68,4 +68,48 @@ public class BruteCollinearPointsTest {
 
     }
     
+    @Test
+    public void Collinear_6pts()
+    {
+      Point[] pts = new Point[6];
+      pts[0] = new Point(19000, 10000);
+      pts[1] = new Point(18000, 10000);
+      pts[2] = new Point(32000, 10000);
+      pts[3] = new Point(21000, 10000);
+      pts[4] = new Point(1234, 5678);
+      pts[5] = new Point(14000, 10000);
+      
+      System.out.println("--- Collinear 6pts ---");
+      BruteCollinearPoints brutePts = new BruteCollinearPoints(pts);
+      for(LineSegment ls : brutePts.segments())
+      {
+          System.out.println(ls.toString());
+      }
+      Assert.assertEquals(1, brutePts.numberOfSegments());
+
+    }
+    
+    @Test
+    public void Collinear_8pts()
+    {
+      Point[] pts = new Point[8];
+      pts[0] = new Point(10000, 0);
+      pts[1] = new Point(0, 10000);
+      pts[2] = new Point(3000, 7000);
+      pts[3] = new Point(7000, 3000);
+      pts[4] = new Point(20000, 21000);
+      pts[5] = new Point(3000, 4000);
+      pts[6] = new Point(14000, 15000);
+      pts[7] = new Point(6000, 7000);
+      
+      System.out.println("--- Collinear 8pts ---");
+      BruteCollinearPoints brutePts = new BruteCollinearPoints(pts);
+      for(LineSegment ls : brutePts.segments())
+      {
+          System.out.println(ls.toString());
+      }
+      Assert.assertEquals(2, brutePts.numberOfSegments());
+
+    }
+    
 }
