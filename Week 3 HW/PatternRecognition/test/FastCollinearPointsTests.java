@@ -1,4 +1,5 @@
 
+import edu.princeton.cs.algs4.In;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -133,6 +134,68 @@ public class FastCollinearPointsTests {
       }
       Assert.assertEquals(1, fastPts.numberOfSegments());
 
+    }
+    
+    private void testFromFile(String filename, int expectedSegmentCount)
+    {
+        // read the n points from a file
+        In in = new In(filename);
+        int n = in.readInt();
+        Point[] points = new Point[n];
+        for (int i = 0; i < n; i++) {
+            int x = in.readInt();
+            int y = in.readInt();
+            points[i] = new Point(x, y);
+        }
+        
+        // print the line segments
+        FastCollinearPoints collinear = new FastCollinearPoints(points);
+        for (LineSegment segment : collinear.segments()) {
+            System.out.println(segment);
+        }
+        
+        Assert.assertEquals(expectedSegmentCount, collinear.numberOfSegments());
+    }
+    
+    @Test
+    public void Collinear_InARow()
+    {
+        testFromFile("test/inarow.txt", 5);
+    }
+    
+    @Test
+    public void Collinear_Input300()
+    {
+        testFromFile("test/input300.txt", 6);
+        
+    }
+    
+    @Test
+    public void Collinear_Input80()
+    {
+        testFromFile("test/input80.txt", 31);
+        
+    }
+    
+    @Test
+    public void Collinear_Input9()
+    {
+        testFromFile("test/input9.txt", 1);
+        
+    }
+    
+    @Test
+    public void Collinear_Input10()
+    {
+        testFromFile("test/input10.txt", 2);
+        
+    }
+    
+    @Test
+    public void Collinear_Input50()
+    {
+        testFromFile("test/input50.txt", 7);
+        
     }
     
 }
