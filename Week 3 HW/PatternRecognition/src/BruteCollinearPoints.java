@@ -77,16 +77,14 @@ public class BruteCollinearPoints {
         Arrays.sort(points);
 
         for(int p = 0; p < pointsCount-3; p++)
-        {
-            Point reference = points[p];
-            Point lastEndpoint = null;
-            
+        {   
             for(int q = p+1; q < pointsCount-2; q++)
             {
                 for(int r = q+1; r < pointsCount-1; r++)
                 {
                     for(int s = r+1; s < pointsCount; s++)
                     {
+                        Point reference = points[p];
                         Point qPt = points[q];
                         Point rPt = points[r];
                         Point sPt = points[s];
@@ -94,19 +92,10 @@ public class BruteCollinearPoints {
                         if(reference.slopeTo(qPt) == reference.slopeTo(rPt) && 
                            reference.slopeTo(rPt) == reference.slopeTo(sPt))
                         {
-                            System.out.println(reference + ", " + qPt + ", " + rPt + ", " + sPt);
-                            lastEndpoint = sPt;
+                            //System.out.println(reference + ", " + qPt + ", " + rPt + ", " + sPt);
+                            lineSegments.add(new LineSegment(reference, sPt));
                         }
                     }
-                }
-            }
-            
-            if(lastEndpoint != null)
-            {
-                LineSegment newSegment = new LineSegment(reference, lastEndpoint);
-                if(!lineSegments.contains(newSegment))
-                {
-                    lineSegments.add(newSegment);
                 }
             }
         }
