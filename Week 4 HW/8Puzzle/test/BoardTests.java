@@ -42,4 +42,32 @@ public class BoardTests {
         Assert.assertEquals(4, board.hamming());
     }
     
+    @Test
+    public void Hamming_Test_InLastBlock()
+    {
+        int[][] blocks = new int[][]
+        {
+            {6,1,3},
+            {4,2,5},
+            {7,8,0}
+        };
+        
+        Board board = new Board(blocks);
+        Assert.assertEquals(4, board.hamming());
+    }
+    
+    @Test
+    public void Manhattan_Test_InMiddle()
+    {
+        int[][] blocks = new int[][]
+        {
+            {8,1,3},
+            {4,0,2},
+            {7,6,5}
+        };
+        
+        Board board = new Board(blocks);
+        Assert.assertEquals(10, board.manhattan());
+    }
+    
 }

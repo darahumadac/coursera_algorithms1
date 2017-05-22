@@ -14,11 +14,15 @@ import java.util.Arrays;
 public class Board {
     
     private int[][] board;
+    private int blockCount;
+    private int boardSize;
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks)
     {
         board = Arrays.copyOf(blocks, blocks.length);
+        boardSize = blocks.length;
+        blockCount = boardSize * boardSize;
     }
     
     // board dimension n
@@ -30,9 +34,6 @@ public class Board {
     // number of blocks out of place
     public int hamming()
     {
-        int boardSize = board.length;
-        int blockCount = boardSize*boardSize;
-        
         int outOfPlaceBlocks = 0;
         
         int blankBlock = 0;
@@ -60,7 +61,30 @@ public class Board {
     // sum of Manhattan distances between blocks and goal
     public int manhattan()
     {
-        return 0;
+        int manhattanDistances = 0;
+        int blankBlock = 0;
+        
+        int expectedRow;
+        int expectedCol;
+        int block;
+        for (int i = 0; i < boardSize; i++)
+        {
+            for (int j = 0; j < boardSize; j++)
+            {
+                block = board[i][j];
+                if(block != blankBlock)
+                {
+                    expectedRow = (block-1) / boardSize;
+                    expectedCol = (block-1) % boardSize;
+
+                    manhattanDistances += (Math.abs(expectedRow - i)+(Math.abs(expectedCol - j)));
+                }
+                
+            }
+        }
+        
+        return manhattanDistances;
+        
     }
     
     // is this board the goal board?
