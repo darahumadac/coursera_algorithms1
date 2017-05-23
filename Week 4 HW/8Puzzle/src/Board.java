@@ -13,22 +13,37 @@ import java.util.Arrays;
  */
 public class Board {
     
-    private int[][] board;
-    private int blockCount;
+    private int[] board;
     private int boardSize;
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks)
     {
-        board = Arrays.copyOf(blocks, blocks.length);
-        boardSize = blocks.length;
-        blockCount = boardSize * boardSize;
+		initializeBoard(blocks);
     }
+	
+	private void initializeBoard(int[][] blocks)
+	{
+		blockSize = blocks.length;
+		boardSize = blockSize * blockSize;
+		
+        board = new int[boardSize];
+		int boardIndex;
+		for (int i = 0; i < blockSize; i++)
+		{
+			for (int j = 0; j < blockSize; j++)
+			{
+				boardIndex = ((i*blockSize) + j);
+				board[boardIndex] = board[i][j];
+			}
+			
+		}
+	}
     
     // board dimension n
     public int dimension()    
     {
-        return board.length;
+        return blockSize;
     }
     
     // number of blocks out of place
@@ -37,23 +52,15 @@ public class Board {
         int outOfPlaceBlocks = 0;
         
         int blankBlock = 0;
-        int expectedBlock;
-        
+        int block;
         for (int i = 0; i < boardSize; i++)
-        {
-            for (int j = 0; j < boardSize; j++)
-            {   
-                if(board[i][j] != blankBlock)
-                {
-                    expectedBlock = (((i*boardSize) + j) + 1) % blockCount;
-                    if (board[i][j] != expectedBlock)
-                    {
-                        outOfPlaceBlocks++;
-                    }
-                }
-                
-            }
-        }
+		{
+			block = board[i][j];
+			if (block != blankBlock && block != i)
+			{
+				outOfPlaceBlocks++;
+			}
+		}
         
         return outOfPlaceBlocks;
     }
@@ -67,15 +74,15 @@ public class Board {
         int expectedRow;
         int expectedCol;
         int block;
-        for (int i = 0; i < boardSize; i++)
+        for (int i = 0; i < blockSize; i++)
         {
-            for (int j = 0; j < boardSize; j++)
+            for (int j = 0; j < blockSize; j++)
             {
                 block = board[i][j];
                 if(block != blankBlock)
                 {
-                    expectedRow = (block-1) / boardSize;
-                    expectedCol = (block-1) % boardSize;
+                    expectedRow = (block-1) / blockSize;
+                    expectedCol = (block-1) % blockSize;
 
                     manhattanDistances += (Math.abs(expectedRow - i)+(Math.abs(expectedCol - j)));
                 }
