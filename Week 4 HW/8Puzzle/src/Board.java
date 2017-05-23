@@ -15,20 +15,34 @@ public class Board {
     
     private int[] board;
     private int boardSize;
+	private int[][] blocksInput;
 	private final int blankBlock = 0;
+	private final int[] goalBoard;
+	
+	private int outOfPlaceBlocks;
+	private int manhattanDistances;
+	
+	private final int notComputed = -1;
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks)
     {
-		initializeBoard(blocks);
-    }
-	
-	private void initializeBoard(int[][] blocks)
-	{
 		blockSize = blocks.length;
+		blocksInput = Arrays.copyOf(blocks, blockSize);
 		boardSize = blockSize * blockSize;
 		
+		outOfPlaceBlocks = notComputed;
+		manhattanDistances = notComputed;
+		
+		initializeBoard();
+		createGoalBoard();
+    }
+	
+	private void initializeBoard()
+	{
         board = new int[boardSize];
+		goalBoard = new int[boardSize];
+		
 		int boardIndex;
 		for (int i = 0; i < blockSize; i++)
 		{
@@ -38,6 +52,14 @@ public class Board {
 				board[boardIndex] = board[i][j];
 			}
 			
+		}
+	}
+	
+	private void createGoalBoard()
+	{
+		for (int i = 0; i < boardSize; i++)
+		{
+			goalBoard[i] = (i+1)%boardSize;
 		}
 	}
     
@@ -50,14 +72,18 @@ public class Board {
     // number of blocks out of place
     public int hamming()
     {
-        int outOfPlaceBlocks = 0;
-        int block;
-        for (int i = 0; i < boardSize; i++)
+		if (outOfPlaceBlocks == notComputed)
 		{
-			block = board[i][j];
-			if (block != blankBlock && block != i)
+			outOfPlaceBlocks = 0;
+			
+			int block;
+			for (int i = 0; i < boardSize; i++)
 			{
-				outOfPlaceBlocks++;
+				block = board[i][j];
+				if (block != blankBlock && block != i)
+				{
+					outOfPlaceBlocks++;
+				}
 			}
 		}
         
@@ -67,28 +93,31 @@ public class Board {
     // sum of Manhattan distances between blocks and goal
     public int manhattan()
     {
-        int manhattanDistances = 0;
-        
-		int currentRow;
-		int currentCol;
-        int expectedRow;
-        int expectedCol;
-		
-        int block;
-		
-		for (int i = 0; i < boardSize; i++)
+		if (manhattanDistances == notComputed)
 		{
-			block = board[i];
-			if (block != blankBlock)
+			manhattanDistances = 0;
+			
+			int currentRow;
+			int currentCol;
+			int expectedRow;
+			int expectedCol;
+			
+			int block;
+			
+			for (int i = 0; i < boardSize; i++)
 			{
-				currentRow = i / blockSize;
-				currentCol = i % blockSize;
-				
-				expectedRow = (block-1) / blockSize;
-				expectedCol = (block-1) % blockSize;
-				
-				manhattanDistances += (Math.abs(expectedRow-currentRow) + 
-				Math.abs(expectedCol-currentCol));
+				block = board[i];
+				if (block != blankBlock)
+				{
+					currentRow = i / blockSize;
+					currentCol = i % blockSize;
+					
+					expectedRow = (block-1) / blockSize;
+					expectedCol = (block-1) % blockSize;
+					
+					manhattanDistances += (Math.abs(expectedRow-currentRow) + 
+					Math.abs(expectedCol-currentCol));
+				}
 			}
 		}
 		
@@ -99,13 +128,14 @@ public class Board {
     // is this board the goal board?
     public boolean isGoal()
     {
-        return false;
+        return hamming() == 0;
     }
     
     // a board that is obtained by exchanging any pair of blocks
     public Board twin()
     {
-        return null;
+		//form 2d array of blocks with non blank blocks switched
+        
     }
     
     // does this board equal y?
