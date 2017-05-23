@@ -15,6 +15,7 @@ public class Board {
     
     private int[] board;
     private int boardSize;
+	private final int blankBlock = 0;
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks)
@@ -50,8 +51,6 @@ public class Board {
     public int hamming()
     {
         int outOfPlaceBlocks = 0;
-        
-        int blankBlock = 0;
         int block;
         for (int i = 0; i < boardSize; i++)
 		{
@@ -69,27 +68,30 @@ public class Board {
     public int manhattan()
     {
         int manhattanDistances = 0;
-        int blankBlock = 0;
         
+		int currentRow;
+		int currentCol;
         int expectedRow;
         int expectedCol;
+		
         int block;
-        for (int i = 0; i < blockSize; i++)
-        {
-            for (int j = 0; j < blockSize; j++)
-            {
-                block = board[i][j];
-                if(block != blankBlock)
-                {
-                    expectedRow = (block-1) / blockSize;
-                    expectedCol = (block-1) % blockSize;
-
-                    manhattanDistances += (Math.abs(expectedRow - i)+(Math.abs(expectedCol - j)));
-                }
-                
-            }
-        }
-        
+		
+		for (int i = 0; i < boardSize; i++)
+		{
+			block = board[i];
+			if (block != blankBlock)
+			{
+				currentRow = i / blockSize;
+				currentCol = i % blockSize;
+				
+				expectedRow = (block-1) / blockSize;
+				expectedCol = (block-1) % blockSize;
+				
+				manhattanDistances += (Math.abs(expectedRow-currentRow) + 
+				Math.abs(expectedCol-currentCol));
+			}
+		}
+		
         return manhattanDistances;
         
     }
