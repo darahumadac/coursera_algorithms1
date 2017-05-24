@@ -150,13 +150,14 @@ public class Board {
     // a board that is obtained by exchanging any pair of blocks
     public Board twin()
     {
+        int[] boardCopy = Arrays.copyOf(board, boardSize);
         //form 2d array of blocks with non blank blocks switched
         int firstBlockIndex = -1;
         int secondBlockIndex = -1;
         
         for (int i = 0; i < boardSize; i++)
         {
-            if (board[i] != blankBlock)
+            if (boardCopy[i] != blankBlock)
             {
                 if (firstBlockIndex == -1)
                 {
@@ -171,17 +172,18 @@ public class Board {
         }
         
         //switch
-        int tempBlock = board[firstBlockIndex];
-        board[firstBlockIndex] = board[secondBlockIndex];
-        board[secondBlockIndex] = tempBlock;
+        int tempBlock = boardCopy[firstBlockIndex];
+        boardCopy[firstBlockIndex] = boardCopy[secondBlockIndex];
+        boardCopy[secondBlockIndex] = tempBlock;
         
-        int[][] newBlocks = make2DArray();
+        int[][] newBlocks = make2DArray(boardCopy);
         
         return new Board(newBlocks);
         
     }
     
-    private int[][] make2DArray()
+    //Assumption is that the array passed in has same dimensions as original array
+    private int[][] make2DArray(int[] oneDimArray)
     {
         int[][] twoDimensionArray = new int[blockSize][blockSize];
         int row;
@@ -191,7 +193,7 @@ public class Board {
             row = i / blockSize;
             col = i % blockSize;
             
-            twoDimensionArray[row][col] = board[i];
+            twoDimensionArray[row][col] = oneDimArray[i];
         }
         
         return twoDimensionArray;
