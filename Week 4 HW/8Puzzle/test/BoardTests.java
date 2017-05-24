@@ -70,4 +70,46 @@ public class BoardTests {
         Assert.assertEquals(10, board.manhattan());
     }
     
+    @Test
+    public void Not_GoalBoard()
+    {
+        int[][] blocks = new int[][]
+        {
+            {8,1,3},
+            {4,0,2},
+            {7,6,5}
+        };
+        
+        Board board = new Board(blocks);
+        Assert.assertFalse(board.isGoal());
+    }
+    
+    @Test
+    public void Is_GoalBoard()
+    {
+        int[][] blocks = new int[][]
+        {
+            {1,2,3},
+            {4,5,6},
+            {7,8,0}
+        };
+        
+        Board board = new Board(blocks);
+        Assert.assertTrue(board.isGoal());
+    }
+    
+    @Test
+    public void Twin()
+    {
+        int[][] blocks = new int[][]
+        {
+            {1,2,3},
+            {4,5,6},
+            {7,8,0}
+        };
+        
+        Board board = new Board(blocks);
+        Assert.assertNotNull(board.twin());
+    }
+    
 }

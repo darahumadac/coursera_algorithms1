@@ -14,6 +14,7 @@ import java.util.Arrays;
 public class Board {
     
     private int[] board;
+    private int blankBlockIndex;
     private int boardSize;
     private int blockSize;
     private int[][] blocksInput;
@@ -54,15 +55,29 @@ public class Board {
             }
 
         }
+        
+        setBlankBlockIndex();
+    }
+    
+    private void setBlankBlockIndex()
+    {
+        for (int i = 0; i < boardSize; i++)
+        {
+            if(board[i] == blankBlock)
+            {
+                blankBlockIndex = i;
+                break;
+            }
+        }
     }
 	
-	private void createGoalBoard()
-	{
-		for (int i = 0; i < boardSize; i++)
-		{
-			goalBoard[i] = (i+1)%boardSize;
-		}
-	}
+    private void createGoalBoard()
+    {
+        for (int i = 0; i < boardSize; i++)
+        {
+            goalBoard[i] = (i+1) % boardSize;
+        }
+    }
     
     // board dimension n
     public int dimension()    
@@ -136,8 +151,50 @@ public class Board {
     public Board twin()
     {
         //form 2d array of blocks with non blank blocks switched
-        return null;
+        int firstBlockIndex = -1;
+        int secondBlockIndex = -1;
         
+        for (int i = 0; i < boardSize; i++)
+        {
+            if (board[i] != blankBlock)
+            {
+                if (firstBlockIndex == -1)
+                {
+                    firstBlockIndex = i;
+                }
+                
+                if (secondBlockIndex == -1 && firstBlockIndex != i)
+                {
+                    secondBlockIndex = i;
+                }
+            }
+        }
+        
+        //switch
+        int tempBlock = board[firstBlockIndex];
+        board[firstBlockIndex] = board[secondBlockIndex];
+        board[secondBlockIndex] = tempBlock;
+        
+        int[][] newBlocks = make2DArray();
+        
+        return new Board(newBlocks);
+        
+    }
+    
+    private int[][] make2DArray()
+    {
+        int[][] twoDimensionArray = new int[blockSize][blockSize];
+        int row;
+        int col;
+        for (int i = 0; i < boardSize; i++)
+        {
+            row = i / blockSize;
+            col = i % blockSize;
+            
+            twoDimensionArray[row][col] = board[i];
+        }
+        
+        return twoDimensionArray;
     }
     
     // does this board equal y?
