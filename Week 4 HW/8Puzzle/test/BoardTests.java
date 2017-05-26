@@ -1,4 +1,6 @@
 
+import java.util.Arrays;
+import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -103,7 +105,7 @@ public class BoardTests {
     {
         int[][] blocks = new int[][]
         {
-            {4,1,3},
+            {2,1,3},
             {4,5,6},
             {7,8,0}
         };
@@ -112,4 +114,73 @@ public class BoardTests {
         Assert.assertNotNull(board.twin());
     }
     
+    @Test
+    public void Board_ToString()
+    {
+        int[][] blocks = new int[][]
+        {
+            {2,1,3},
+            {4,5,6},
+            {7,8,0}
+        };
+        
+        Board board = new Board(blocks);
+        System.out.println(board.toString());
+        Assert.assertEquals("3\n 2  1  3 \n 4  5  6 \n 7  8  0 \n", board.toString());
+    }
+    
+    @Test
+    public void Board_Equals_True()
+    {
+        int[][] blocks1 = new int[][]
+        {
+            {2,1,3},
+            {4,5,6},
+            {7,8,0}
+        };
+        Board board1 = new Board(blocks1);
+        
+        int[][] blocks2 = Arrays.copyOf(blocks1, blocks1.length);
+        Board board2 = new Board(blocks2);
+        
+        Assert.assertTrue(board1.equals(board2));
+    }
+    
+    @Test
+    public void Board_Not_Equals_SameClass()
+    {
+        int[][] blocks1 = new int[][]
+        {
+            {2,1,3},
+            {4,5,6},
+            {7,8,0}
+        };
+        Board board1 = new Board(blocks1);
+        
+        int[][] blocks2 = new int[][]
+        {
+            {5,1,3},
+            {4,2,6},
+            {7,8,0}
+        };
+        Board board2 = new Board(blocks2);
+        
+        Assert.assertFalse(board1.equals(board2));
+    }
+    
+    @Test
+    public void Board_Not_Equals_DifferentClass()
+    {
+        int[][] blocks1 = new int[][]
+        {
+            {2,1,3},
+            {4,5,6},
+            {7,8,0}
+        };
+        Board board1 = new Board(blocks1);
+        
+        Date date = new Date();
+        
+        Assert.assertFalse(board1.equals(date));
+    }
 }

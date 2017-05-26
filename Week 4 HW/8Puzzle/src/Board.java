@@ -15,6 +15,7 @@ public class Board {
     
     private int[] board;
     private int blankBlockIndex;
+    private String boardString = "";
     private int boardSize;
     private int blockSize;
     private int[][] blocksInput;
@@ -57,6 +58,7 @@ public class Board {
         }
         
         setBlankBlockIndex();
+        setStringRepresentation();
     }
     
     private void setBlankBlockIndex()
@@ -69,6 +71,21 @@ public class Board {
                 break;
             }
         }
+    }
+    
+    private void setStringRepresentation() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(blockSize).append("\n");
+        for (int i = 0; i < blockSize; i++)
+        {
+            for (int j = 0; j < blockSize; j++)
+            {
+                sb.append(String.format("%2d ", blocksInput[i][j]));
+            }
+            sb.append("\n");
+        }
+        
+        boardString = sb.toString();
     }
 	
     private void createGoalBoard()
@@ -202,6 +219,10 @@ public class Board {
     // does this board equal y?
     public boolean equals(Object y)
     {
+        if(y.getClass() == Board.class)
+        {
+            return ((Board)y).toString().equals(boardString);
+        }
         return false;
     }
     
@@ -214,7 +235,7 @@ public class Board {
     // string representation of this board (in the output format specified below)
     public String toString()
     {
-        return null;
+        return boardString;
     }
 
     // unit tests (not graded)
