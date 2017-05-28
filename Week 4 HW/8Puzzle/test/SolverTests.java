@@ -26,7 +26,7 @@ public class SolverTests {
     @Test
     public void puzzle04_Test()
     {
-        testFromFile("test/puzzle04.txt");
+        testFromFile("test/puzzle04.txt", true, 4);
     }
     
     @Test
@@ -44,26 +44,69 @@ public class SolverTests {
         
     }
     
+    @Test
+    public void puzzle2x2_Unsolvable()
+    {
+        testFromFile("test/puzzle2x2-unsolvable2.txt", false, -1);
+        
+    }
+    
+    //@Test
+    public void puzzle2x2_MoreThan2Moves()
+    {
+        testFromFile("test/puzzle2x2-03.txt", true, 3);
+        testFromFile("test/puzzle2x2-05.txt", true, 5);
+        testFromFile("test/puzzle2x2-06.txt", true, 6);
+    }
+    
+    //@Test
+    public void puzzle2x2_3Moves()
+    {
+        testFromFile("test/puzzle03.txt", true, 3);
+    }
+    
+    //@Test
+    public void puzzle3x3_Max5Moves()
+    {
+        testFromFile("test/puzzle3x3-00.txt", true, 0);
+        testFromFile("test/puzzle3x3-01.txt", true, 1);
+        testFromFile("test/puzzle3x3-02.txt", true, 2);
+        testFromFile("test/puzzle3x3-03.txt", true, 3);
+        testFromFile("test/puzzle3x3-05.txt", true, 5);
+    }
+    
+    @Test
+    public void puzzle3x3_Solvable_MoreThan5Moves()
+    {
+        testFromFile("test/puzzle3x3-06.txt", true, 6);
+        //testFromFile("test/puzzle3x3-07.txt", true, 7);
+    }
+    
+    @Test
+    public void puzzle4x4_Max5Moves()
+    {
+        testFromFile("test/puzzle04.txt", true, 4);
+        testFromFile("test/puzzle4x4-05.txt", true, 5);
+    }
+    
+    @Test
+    public void puzzle4x4_MoreThan5Moves()
+    {
+        testFromFile("test/puzzle4x4-06.txt", true, 6);
+        testFromFile("test/puzzle4x4-07.txt", true, 7);
+        //testFromFile("test/puzzle4x4-10.txt", true, 10);
+    }
+    
     
     //@Test
     public void puzzle3x3_Unsolvable()
     {
-        //testFromFile("test/puzzle3x3-unsolvable.txt");
-        int[][] blocks = new int[][]
-        {
-            {1,2,3},
-            {4,6,5},
-            {7,8,0}
-        };
-        
-        Board board = new Board(blocks);
-        Solver solver = new Solver(board);
-        Assert.assertFalse(solver.isSolvable());
+        testFromFile("test/puzzle3x3-unsolvable.txt", false, -1);
     }
     
     
     
-    private void testFromFile(String filename)
+    private void testFromFile(String filename, boolean isSolvable, int moves)
     {
         // create initial board from file
         In in = new In(filename);
@@ -78,6 +121,7 @@ public class SolverTests {
         Solver solver = new Solver(initial);
 
         // print solution to standard output
+        StdOut.println("---------" + filename + "---------");
         if (!solver.isSolvable())
             StdOut.println("No solution possible");
         else {
@@ -85,6 +129,9 @@ public class SolverTests {
             for (Board board : solver.solution())
                 StdOut.println(board);
         }
+        
+        Assert.assertEquals(isSolvable, solver.isSolvable());
+        Assert.assertEquals(moves, solver.moves());
     }
     
     

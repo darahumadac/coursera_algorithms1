@@ -1,7 +1,6 @@
 
 import edu.princeton.cs.algs4.MinPQ;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,7 +31,7 @@ public class Solver {
         
         public int priority()
         {
-            return searchBoard.hamming() + movesMade;
+            return searchBoard.manhattan() + movesMade;
         }
         
         @Override
@@ -44,7 +43,8 @@ public class Solver {
     
     
     private Board initialSearchBoard;
-    private ArrayList<Board> puzzleSolution;
+    private Board goalBoard;
+    private ArrayList<Board> originalSolution;
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial)
     {
@@ -54,86 +54,78 @@ public class Solver {
         }
         
         initialSearchBoard = initial;
-        puzzleSolution = solve(initialSearchBoard);
+        goalBoard = null;
+        
+        MinPQ<SearchNode> priorityQueue = new MinPQ<>();
+        originalSolution = new ArrayList<>();
+        int pastMoves = originalSolution.size();
+    
+        SearchNode initialSearchNode = new SearchNode(initialSearchBoard, pastMoves, null);
+        priorityQueue.insert(initialSearchNode);
+        
+        MinPQ<SearchNode> twinPriorityQueue = new MinPQ<>();
+        ArrayList<Board> twinSolution = new ArrayList<>();
+        int twinPastMoves = twinSolution.size();
+    
+        SearchNode twinInitSearchNode = 
+                new SearchNode(initialSearchBoard.twin(), twinPastMoves, null);
+        twinPriorityQueue.insert(twinInitSearchNode);
+        
+        do
+        {
+            goalBoard = solve(priorityQueue, originalSolution);
+            
+        }while(goalBoard == null && 
+                solve(twinPriorityQueue, twinSolution) == null);
+        
         
     }
     
-    private ArrayList<Board> solve(Board initialBoard)
+    private Board solve(MinPQ<SearchNode> priorityQueue,
+                                   ArrayList<Board> solutions)
     {
-        MinPQ<SearchNode> priorityQueue = new MinPQ<>();
-        ArrayList<Board> solutions = new ArrayList<>();
-        int pastMoves = solutions.size();
-    
-        SearchNode newSearchNode = new SearchNode(initialBoard, pastMoves, null);
-        priorityQueue.insert(newSearchNode);
-        boolean isGoalFound = initialBoard.isGoal();
-         
-        SearchNode currentSearch;
-        Board currentBoard;
+        SearchNode currentSearch = priorityQueue.delMin();
+        Board currentBoard = currentSearch.searchBoard;
+        solutions.add(currentBoard);
+        
         Iterable<Board> currentBoardNeighbors;
-        while(!isGoalFound && !priorityQueue.isEmpty())
-        {
-            currentSearch = priorityQueue.delMin();
-            currentBoard = currentSearch.searchBoard;
-            
-            solutions.add(currentBoard);
-            pastMoves = solutions.size();
-            
-            if (!currentBoard.isGoal())
-            {    
-                currentBoardNeighbors = currentBoard.neighbors();
-                for (Board neighbor : currentBoardNeighbors)
+        if (!currentBoard.isGoal())
+        {    
+            currentBoardNeighbors = currentBoard.neighbors();
+            for (Board neighbor : currentBoardNeighbors)
+            {
+                if(currentSearch.previousSearchNode == null ||
+                   !neighbor.equals(currentSearch.previousSearchNode.searchBoard))
                 {
-
-                    if(currentSearch.previousSearchNode == null ||
-                       !neighbor.equals(currentSearch.previousSearchNode.searchBoard) &&
-                       !isPresentInQueue(neighbor, priorityQueue) &&
-                       !solutions.contains(neighbor))
-                    {
-                        priorityQueue.insert(
-                            new SearchNode(neighbor, pastMoves, currentSearch));
-                    }
+                    priorityQueue.insert(
+                        new SearchNode(neighbor, solutions.size(), currentSearch));
                 }
             }
-            else
-            {
-                return solutions;
-            }
+        }
+        else
+        {
+            return currentBoard;
         }
         
         return null;
     }
     
-    private boolean isPresentInQueue(Board board, MinPQ pq)
-    {
-        Iterator pqItr = pq.iterator();
-        while (pqItr.hasNext())
-        {
-            SearchNode node = (SearchNode)pqItr.next();
-            if(board.equals(node.searchBoard))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    
     // is the initial board solvable?
     public boolean isSolvable()
     {
-        return puzzleSolution != null;
+        return goalBoard != null;
     }
     
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves()
     {
-        return (puzzleSolution != null ? puzzleSolution.size()-1 : -1);
+        return (isSolvable() ? originalSolution.size()-1 : -1);
     }
     
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution()
     {
-        return puzzleSolution;
+        return originalSolution;
     }
     
     // solve a slider puzzle (given below)

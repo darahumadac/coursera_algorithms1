@@ -103,6 +103,21 @@ public class BoardTests {
     }
     
     @Test
+    public void Is_GoalBoard2()
+    {
+        int[][] blocks = new int[][]
+        {
+            {1,  2,  0}, 
+            {4,  8,  3},
+            {7,  6,  2},
+        };
+        
+        Board board = new Board(blocks);
+        Assert.assertFalse(board.isGoal());
+        
+    }
+    
+    @Test
     public void Twin()
     {
         int[][] blocks = new int[][]
@@ -114,6 +129,7 @@ public class BoardTests {
         
         Board board = new Board(blocks);
         Assert.assertNotNull(board.twin());
+        
     }
     
     @Test
