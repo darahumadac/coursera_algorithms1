@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /*
@@ -16,16 +17,16 @@ public class Board {
     private int[] board;
     private int blankBlockIndex;
     private String boardString = "";
-    private int boardSize;
-    private int blockSize;
-    private int[][] blocksInput;
+    private final int boardSize;
+    private final int blockSize;
+    private final int[][] blocksInput;
     private final int blankBlock = 0;
     private int[] goalBoard;
 
     private int outOfPlaceBlocks;
     private int manhattanDistances;
 
-    private final int notComputed = -1;
+    private final int notInitialized = -1;
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks)
@@ -34,8 +35,8 @@ public class Board {
         blocksInput = Arrays.copyOf(blocks, blockSize);
         boardSize = blockSize * blockSize;
 
-        outOfPlaceBlocks = notComputed;
-        manhattanDistances = notComputed;
+        outOfPlaceBlocks = notInitialized;
+        manhattanDistances = notInitialized;
 
         initializeBoard();
         createGoalBoard();
@@ -105,7 +106,7 @@ public class Board {
     // number of blocks out of place
     public int hamming()
     {
-        if (outOfPlaceBlocks == notComputed)
+        if (outOfPlaceBlocks == notInitialized)
         {
             outOfPlaceBlocks = 0;
 
@@ -126,7 +127,7 @@ public class Board {
     // sum of Manhattan distances between blocks and goal
     public int manhattan()
     {
-        if (manhattanDistances == notComputed)
+        if (manhattanDistances == notInitialized)
         {
             manhattanDistances = 0;
 
@@ -229,7 +230,80 @@ public class Board {
     // all neighboring boards
     public Iterable<Board> neighbors()
     {
-        return null;
+        int blankBlockRow = blankBlockIndex / blockSize;
+        int blankBlockCol = blankBlockIndex % blockSize;
+        
+        ArrayList<Board> neighbors = new ArrayList<>();
+        
+        int leftNeighbor = blankBlockCol - 1;
+        if(leftNeighbor > -1)
+        {
+            int[][] leftShiftBoard = 
+            swap(blocksInput, blankBlockRow, blankBlockCol, 
+                                                blankBlockRow, leftNeighbor);
+            
+            neighbors.add(new Board(leftShiftBoard));
+        }
+        
+        int rightNeighbor = blankBlockCol + 1;
+        if(rightNeighbor < blockSize)
+        {
+            int[][] rightShiftBoard = 
+            swap(blocksInput, blankBlockRow, blankBlockCol,
+                                                 blankBlockRow, rightNeighbor);
+            
+            neighbors.add(new Board(rightShiftBoard));
+        }
+        
+        int bottomNeighbor = blankBlockRow + 1;
+        if(bottomNeighbor < blockSize)
+        {
+            int[][] bottomShiftBoard = 
+            swap(blocksInput, blankBlockRow, blankBlockCol,
+                                                  bottomNeighbor, blankBlockCol);
+            
+            neighbors.add(new Board(bottomShiftBoard));
+        }
+        
+        int topNeighbor = blankBlockRow - 1;
+        if(topNeighbor > -1)
+        {
+            int[][] topShiftBoard = 
+            swap(blocksInput, blankBlockRow, blankBlockCol,
+                                               topNeighbor, blankBlockCol);
+            
+            neighbors.add(new Board(topShiftBoard));
+        }
+        
+        return neighbors;
+    }
+    
+    private int[][] swap(int[][] array, int originRow, int originCol, 
+                                                    int destinationRow,
+                                                    int destinationCol)
+    {
+        int[][] arrayCopy = deepCopy(array);
+        
+        int temp = arrayCopy[originRow][originCol];
+        arrayCopy[originRow][originCol] = 
+                arrayCopy[destinationRow][destinationCol];
+        arrayCopy[destinationRow][destinationCol] = temp;
+        
+        return arrayCopy;
+    }
+    
+    private int[][] deepCopy(int[][] originalArray)
+    {
+        int size = originalArray.length;
+        int[][] copy = new int[size][size];
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                copy[i][j] = originalArray[i][j];
+            }
+        }
+        return copy;
     }
     
     // string representation of this board (in the output format specified below)
