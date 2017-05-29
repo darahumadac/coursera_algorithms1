@@ -51,7 +51,7 @@ public class SolverTests {
         
     }
     
-    //@Test
+    @Test
     public void puzzle2x2_MoreThan2Moves()
     {
         testFromFile("test/puzzle2x2-03.txt", true, 3);
@@ -59,13 +59,13 @@ public class SolverTests {
         testFromFile("test/puzzle2x2-06.txt", true, 6);
     }
     
-    //@Test
+    @Test
     public void puzzle2x2_3Moves()
     {
         testFromFile("test/puzzle03.txt", true, 3);
     }
     
-    //@Test
+    @Test
     public void puzzle3x3_Max5Moves()
     {
         testFromFile("test/puzzle3x3-00.txt", true, 0);
@@ -79,7 +79,7 @@ public class SolverTests {
     public void puzzle3x3_Solvable_MoreThan5Moves()
     {
         testFromFile("test/puzzle3x3-06.txt", true, 6);
-        //testFromFile("test/puzzle3x3-07.txt", true, 7);
+        testFromFile("test/puzzle3x3-07.txt", true, 7);
     }
     
     @Test
@@ -94,7 +94,7 @@ public class SolverTests {
     {
         testFromFile("test/puzzle4x4-06.txt", true, 6);
         testFromFile("test/puzzle4x4-07.txt", true, 7);
-        //testFromFile("test/puzzle4x4-10.txt", true, 10);
+        testFromFile("test/puzzle4x4-10.txt", true, 10);
     }
     
     
