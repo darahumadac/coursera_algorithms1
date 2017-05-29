@@ -44,7 +44,7 @@ public class Solver {
     
     private Board initialSearchBoard;
     private Stack<Board> solution;
-    // find a solution to the initial board (using the A* algorithm)
+    //  find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial)
     {
         if (initial == null)
@@ -72,7 +72,7 @@ public class Solver {
         {
             solution = solve(priorityQueue);
             
-        }while(solution == null && solve(twinPriorityQueue) == null);
+        } while (solution == null && solve(twinPriorityQueue) == null);
         
     }
     
@@ -108,7 +108,7 @@ public class Solver {
     private Stack<Board> getSolution(SearchNode goalNode)
     {
         Stack<Board> puzzleSolution = new Stack<>();
-        while(goalNode.previousSearchNode != null)
+        while (goalNode.previousSearchNode != null)
         {
             puzzleSolution.push(goalNode.previousSearchNode.searchBoard);
             goalNode = goalNode.previousSearchNode;
@@ -119,25 +119,25 @@ public class Solver {
         return puzzleSolution;
     }
     
-    // is the initial board solvable?
+    //  is the initial board solvable?
     public boolean isSolvable()
     {
         return solution != null;
     }
     
-    // min number of moves to solve initial board; -1 if unsolvable
+    //  min number of moves to solve initial board; -1 if unsolvable
     public int moves()
     {
         return (isSolvable() ? solution.size()-1: -1);
     }
     
-    // sequence of boards in a shortest solution; null if unsolvable
+    //  sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution()
     {
         return solution;
     }
     
-    // solve a slider puzzle (given below)
+    //  solve a slider puzzle (given below)
     public static void main(String[] args)
     {
     

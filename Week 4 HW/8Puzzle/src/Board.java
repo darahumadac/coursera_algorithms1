@@ -2,13 +2,13 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/*
+/* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/**
+/* *
  *
  * @author Darah
  */
@@ -27,8 +27,8 @@ public class Board {
     private int manhattanDistances;
 
     private final int notInitialized = -1;
-    // construct a board from an n-by-n array of blocks
-    // (where blocks[i][j] = block in row i, column j)
+    //  construct a board from an n-by-n array of blocks
+    //  (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks)
     {
         blockSize = blocks.length;
@@ -97,13 +97,13 @@ public class Board {
         }
     }
     
-    // board dimension n
+    //  board dimension n
     public int dimension()    
     {
         return blockSize;
     }
     
-    // number of blocks out of place
+    //  number of blocks out of place
     public int hamming()
     {
         if (outOfPlaceBlocks == notInitialized)
@@ -124,7 +124,7 @@ public class Board {
         return outOfPlaceBlocks;
     }
     
-    // sum of Manhattan distances between blocks and goal
+    //  sum of Manhattan distances between blocks and goal
     public int manhattan()
     {
         if (manhattanDistances == notInitialized)
@@ -159,17 +159,17 @@ public class Board {
         
     }
     
-    // is this board the goal board?
+    //  is this board the goal board?
     public boolean isGoal()
     {
         return hamming() == 0;
     }
     
-    // a board that is obtained by exchanging any pair of blocks
+    //  a board that is obtained by exchanging any pair of blocks
     public Board twin()
     {
         int[] boardCopy = Arrays.copyOf(board, boardSize);
-        //form 2d array of blocks with non blank blocks switched
+        // form 2d array of blocks with non blank blocks switched
         int firstBlockIndex = -1;
         int secondBlockIndex = -1;
         
@@ -189,7 +189,7 @@ public class Board {
             }
         }
         
-        //switch
+        // switch
         int tempBlock = boardCopy[firstBlockIndex];
         boardCopy[firstBlockIndex] = boardCopy[secondBlockIndex];
         boardCopy[secondBlockIndex] = tempBlock;
@@ -200,7 +200,7 @@ public class Board {
         
     }
     
-    //Assumption is that the array passed in has same dimensions as original array
+    // Assumption is that the array passed in has same dimensions as original array
     private int[][] make2DArray(int[] oneDimArray)
     {
         int[][] twoDimensionArray = new int[blockSize][blockSize];
@@ -217,17 +217,17 @@ public class Board {
         return twoDimensionArray;
     }
     
-    // does this board equal y?
+    //  does this board equal y?
     public boolean equals(Object y)
     {
         if (y.getClass() == Board.class)
         {
-            return ((Board)y).toString().equals(boardString);
+            return ((Board) y).toString().equals(boardString);
         }
         return false;
     }
     
-    // all neighboring boards
+    //  all neighboring boards
     public Iterable<Board> neighbors()
     {
         int blankBlockRow = blankBlockIndex / blockSize;
@@ -306,13 +306,13 @@ public class Board {
         return copy;
     }
     
-    // string representation of this board (in the output format specified below)
+    //  string representation of this board (in the output format specified below)
     public String toString()
     {
         return boardString;
     }
 
-    // unit tests (not graded)
+    //  unit tests (not graded)
     public static void main(String[] args)
     {
     
