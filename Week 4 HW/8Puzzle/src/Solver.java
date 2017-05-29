@@ -1,6 +1,5 @@
 
 import edu.princeton.cs.algs4.MinPQ;
-import java.util.ArrayList;
 import java.util.Stack;
 
 /*
@@ -45,7 +44,6 @@ public class Solver {
     
     private Board initialSearchBoard;
     private Stack<Board> solution;
-    private ArrayList<Board> originalSolution;
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial)
     {
@@ -58,15 +56,13 @@ public class Solver {
         solution = null;
         
         MinPQ<SearchNode> priorityQueue = new MinPQ<>();
-        originalSolution = new ArrayList<>();
-        int pastMoves = originalSolution.size();
+        int pastMoves = 0;
     
         SearchNode initialSearchNode = new SearchNode(initialSearchBoard, pastMoves, null);
         priorityQueue.insert(initialSearchNode);
         
         MinPQ<SearchNode> twinPriorityQueue = new MinPQ<>();
-        ArrayList<Board> twinSolution = new ArrayList<>();
-        int twinPastMoves = twinSolution.size();
+        int twinPastMoves = 0;
     
         SearchNode twinInitSearchNode = 
                 new SearchNode(initialSearchBoard.twin(), twinPastMoves, null);
@@ -74,22 +70,16 @@ public class Solver {
         
         do
         {
-            solution = solve(priorityQueue, originalSolution);
+            solution = solve(priorityQueue);
             
-        }while(solution == null && 
-                solve(twinPriorityQueue, twinSolution) == null);
-        
-        
-        
+        }while(solution == null && solve(twinPriorityQueue) == null);
         
     }
     
-    private Stack<Board> solve(MinPQ<SearchNode> priorityQueue,
-                                   ArrayList<Board> solutions)
+    private Stack<Board> solve(MinPQ<SearchNode> priorityQueue)
     {
         SearchNode currentSearch = priorityQueue.delMin();
         Board currentBoard = currentSearch.searchBoard;
-        solutions.add(currentBoard);
         
         Iterable<Board> currentBoardNeighbors;
         if (!currentBoard.isGoal())
@@ -97,11 +87,13 @@ public class Solver {
             currentBoardNeighbors = currentBoard.neighbors();
             for (Board neighbor : currentBoardNeighbors)
             {
-                if(currentSearch.previousSearchNode == null ||
+                if (currentSearch.previousSearchNode == null ||
                    !neighbor.equals(currentSearch.previousSearchNode.searchBoard))
                 {
                     priorityQueue.insert(
-                        new SearchNode(neighbor, solutions.size(), currentSearch));
+                        new SearchNode(neighbor, 
+                                currentSearch.movesMade+1,
+                                currentSearch));
                 }
             }
         }

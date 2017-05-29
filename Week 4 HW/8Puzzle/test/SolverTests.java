@@ -98,7 +98,7 @@ public class SolverTests {
     }
     
     
-    //@Test
+    @Test
     public void puzzle3x3_Unsolvable()
     {
         testFromFile("test/puzzle3x3-unsolvable.txt", false, -1);
