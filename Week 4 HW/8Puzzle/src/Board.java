@@ -66,7 +66,7 @@ public class Board {
     {
         for (int i = 0; i < boardSize; i++)
         {
-            if(board[i] == blankBlock)
+            if (board[i] == blankBlock)
             {
                 blankBlockIndex = i;
                 break;
@@ -220,7 +220,7 @@ public class Board {
     // does this board equal y?
     public boolean equals(Object y)
     {
-        if(y.getClass() == Board.class)
+        if (y.getClass() == Board.class)
         {
             return ((Board)y).toString().equals(boardString);
         }
@@ -236,7 +236,7 @@ public class Board {
         ArrayList<Board> neighbors = new ArrayList<>();
         
         int leftNeighbor = blankBlockCol - 1;
-        if(leftNeighbor > -1)
+        if (leftNeighbor > -1)
         {
             int[][] leftShiftBoard = 
             swap(blocksInput, blankBlockRow, blankBlockCol, 
@@ -246,7 +246,7 @@ public class Board {
         }
         
         int rightNeighbor = blankBlockCol + 1;
-        if(rightNeighbor < blockSize)
+        if (rightNeighbor < blockSize)
         {
             int[][] rightShiftBoard = 
             swap(blocksInput, blankBlockRow, blankBlockCol,
@@ -256,7 +256,7 @@ public class Board {
         }
         
         int bottomNeighbor = blankBlockRow + 1;
-        if(bottomNeighbor < blockSize)
+        if (bottomNeighbor < blockSize)
         {
             int[][] bottomShiftBoard = 
             swap(blocksInput, blankBlockRow, blankBlockCol,
@@ -266,7 +266,7 @@ public class Board {
         }
         
         int topNeighbor = blankBlockRow - 1;
-        if(topNeighbor > -1)
+        if (topNeighbor > -1)
         {
             int[][] topShiftBoard = 
             swap(blocksInput, blankBlockRow, blankBlockCol,
