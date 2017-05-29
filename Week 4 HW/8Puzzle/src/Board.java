@@ -220,7 +220,7 @@ public class Board {
     //  does this board equal y?
     public boolean equals(Object y)
     {
-        if (y.getClass() == Board.class)
+        if (y != null && y.getClass() == this.getClass())
         {
             return ((Board) y).toString().equals(boardString);
         }

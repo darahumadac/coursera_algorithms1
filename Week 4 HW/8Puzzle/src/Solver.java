@@ -107,14 +107,20 @@ public class Solver {
     
     private Stack<Board> getSolution(SearchNode goalNode)
     {
-        Stack<Board> puzzleSolution = new Stack<>();
+        Stack<Board> puzzleSolutionTemp = new Stack<>();
         while (goalNode.previousSearchNode != null)
         {
-            puzzleSolution.push(goalNode.previousSearchNode.searchBoard);
+            puzzleSolutionTemp.push(goalNode.searchBoard);
             goalNode = goalNode.previousSearchNode;
         }
         
-        puzzleSolution.push(goalNode.searchBoard);
+        puzzleSolutionTemp.push(goalNode.searchBoard);
+        
+        Stack<Board> puzzleSolution = new Stack<>();
+        while (!puzzleSolutionTemp.isEmpty())
+        {
+            puzzleSolution.push(puzzleSolutionTemp.pop());
+        }
         
         return puzzleSolution;
     }
