@@ -14,13 +14,13 @@ import java.util.Stack;
  */
 public class Solver {
     
-    public class SearchNode implements Comparable<SearchNode>
+    private class SearchNode implements Comparable<SearchNode>
     {
         private final Board searchBoard;
         private final int movesMade;
         private final SearchNode previousSearchNode;
         
-        public SearchNode(Board board, 
+        private SearchNode(Board board, 
                           int movesToReachBoard, 
                           SearchNode prevSearchNode)
         {
@@ -114,6 +114,8 @@ public class Solver {
             goalNode = goalNode.previousSearchNode;
         }
         
+        puzzleSolution.push(goalNode.searchBoard);
+        
         return puzzleSolution;
     }
     
@@ -126,7 +128,7 @@ public class Solver {
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves()
     {
-        return (isSolvable() ? solution.size() : -1);
+        return (isSolvable() ? solution.size()-1: -1);
     }
     
     // sequence of boards in a shortest solution; null if unsolvable
